@@ -1,0 +1,136 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f9f8fe;
+}
+
+.container {
+  width: 100%;
+  margin: 30px auto;
+  max-width: 640px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-bar .logo {
+  font-size: 30px;
+  color: #9361f1;
+  font-family: "Fredoka One", cursive;
+}
+
+.search-bar .logo span {
+  color: #778af8;
+  font-size: 40px;
+}
+
+.search-bar .search input {
+  border: 2px solid #778af8;
+  border-radius: 20px;
+  padding: 10px 30px;
+  background-color: #f9f8fe;
+}
+
+.search-bar .search button {
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  background-color: #778af8;
+  color: aliceblue;
+}
+
+.search-bar .search button:hover {
+  border: 2px solid #778af8;
+  background-color: aliceblue;
+  color: #778af8;
+}
+
+.weather-container {
+  margin-top: 20px;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  color: white;
+  background-image: url(../assets/bg.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 3px 3px 30px rgba(87, 2, 95, 0.356);
+  border-radius: 20px;
+}
+
+.weather-container .current-weather {
+  margin: 20px;
+  border-radius: 20px;
+  background-color: rgba(250, 250, 250, 0.5);
+}
+
+.weather-container .current-weather,
+.local-time {
+  padding: 20px;
+}
+
+.weather-container .current-weather .weather-icon {
+  font-size: 30px;
+}
+
+.week-forecast {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.week-forecast .more-info-card {
+  margin-bottom: 10px;
+  padding: 20px 40px;
+  background-color: #778af8;
+  border-radius: 20px;
+}
+
+.week-forecast .more-info-card .humidity span,
+.wind span {
+  color: aliceblue;
+}
+
+.week-forecast .week-card {
+  display: flex;
+}
+
+.week-forecast .week-card .day {
+  margin: 5px;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #778af8;
+  border-radius: 20px;
+}
+
+.week-forecast .week-card .day .morning {
+  font-weight: 600;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit {
+  cursor: pointer;
+}
+
+.unit:hover {
+  color: rgb(0, 17, 255);
+}
+
+.unit-active {
+  color: aqua;
+}
