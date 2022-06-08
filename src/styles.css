@@ -58,7 +58,7 @@ body {
   height: 300px;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: space-evenly;
   color: white;
   background-image: url(../assets/bg.jpeg);
   background-repeat: no-repeat;
@@ -89,31 +89,38 @@ body {
   flex-wrap: wrap;
 }
 
-.week-forecast .more-info-card {
-  margin-bottom: 10px;
+.weather-container .more-info-card {
+  margin: 20px;
+  margin-left: -50px;
   padding: 20px 40px;
-  background-color: #778af8;
+  background-color: #778af880;
   border-radius: 20px;
 }
 
-.week-forecast .more-info-card .humidity span,
-.wind span {
-  color: aliceblue;
+.humidity,
+.wind {
+  color: rgb(172, 216, 255);
 }
 
-.week-forecast .week-card {
+.week-forecast {
   display: flex;
 }
 
-.week-forecast .week-card .day {
+.week-forecast .day {
   margin: 5px;
   text-align: center;
-  padding: 20px;
-  border: 1px solid #778af8;
+  padding: 20px 15px;
+  border: 1px solid rgb(182, 85, 238);
+  background-color: rgba(65, 5, 100, 0.3);
+  color: #250b53;
   border-radius: 20px;
 }
 
-.week-forecast .week-card .day .morning {
+.week-forecast .day .day-icon img {
+  width: 70px;
+}
+
+.week-forecast .day .morning {
   font-weight: 600;
 }
 
@@ -133,4 +140,8 @@ body {
 
 .unit-active {
   color: aqua;
+}
+
+.unit-disabled {
+  pointer-events: none;
 }

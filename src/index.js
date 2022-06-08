@@ -9,6 +9,9 @@ const WEEK = [
   "Sunday",
 ];
 
+const currentWeather = document.querySelector(".weather-container");
+const weekContainer = document.querySelector(".week-forecast");
+
 window.addEventListener("load", handleCurrentLocation);
 
 function handleCurrentLocation() {
@@ -20,11 +23,14 @@ function handlePosition(position) {
   let lon = position.coords.longitude;
 
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
-  ).then((res) => res.json().then((data) => renderWeather(data)));
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=6&units=metric&appid=${API_KEY}`
+  ).then((res) =>
+    res.json().then((data) => {
+      renderWeather(data);
+      renderDay(data);
+    })
+  );
 }
-
-const currentWeather = document.querySelector(".weather-container");
 
 form.addEventListener("submit", (e) => handleSubmit(e));
 
@@ -35,35 +41,45 @@ function handleSubmit(e) {
 
 async function getWeather(city) {
   await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=6&units=metric&appid=${API_KEY}`
   )
     .then((res) => res.json())
     .then((data) => {
       renderWeather(data);
+      renderDay(data);
     });
 }
 
-function renderWeather({ main, name, weather, sys }) {
-  const date = new Date();
+function renderWeather(data) {
+  const date = new Date(data.list[0].dt);
+  const currentDate = new Date();
   currentWeather.innerHTML = "";
   currentWeather.insertAdjacentHTML(
     "beforeend",
     `<div class="current-weather">
         <img alt="weather-icon" src="http://openweathermap.org/img/wn/${
-          weather[0].icon
+          data.list[0].weather[0].icon
         }@2x.png">
-          <div class="temperature"> <span id="temp">${main.temp.toFixed(
+          <div class="temperature"> <span id="temp">${data.list[0].main.temp.toFixed(
             0
           )} </span>
            <span class="units">
-              <span class='unit unit-active' id="celcius"> °C </span> | <span class='unit' id="fahrenheit"> °F</span>
-            </span>, ${weather[0].description}
+              <span class='unit unit-active unit-disabled' id="celcius"> °C </span> | <span class='unit' id="fahrenheit"> °F</span>
+            </span>, ${data.list[0].weather[0].description}
           </div>
-          <div id="location" class="location">${name}, ${sys.country}</div> 
+          <div id="location" class="location">${data.city.name}</div>
           </div>
+           <div class="more-info-card">
+              <div>Humidity: <span class="humidity">${
+                data.list[0].main.humidity
+              }</span></div>
+          <div >Wind: <span class="wind">${
+            data.list[0].wind.speed
+          } km/h</span></div>
+           </div>
            <div class="local-time">
-          <div class="time">${date.getHours()}: ${date.getMinutes()}</div>
-          <div class="day">${WEEK[date.getDay() - 1]}</div>
+          <div class="time">${currentDate.getHours()}: ${currentDate.getMinutes()}</div>
+          <div class="day">${WEEK[date.getDay()]}</div>
         </div>`
   );
 
@@ -77,13 +93,47 @@ function handleUnits() {
   units.addEventListener("click", (e) => {
     if (e.target.id === "celcius") {
       temp.innerHTML = (((+temp.innerHTML - 32) * 5) / 9).toFixed(1);
-      units.children[0].className = "unit unit-active";
+      units.children[0].className = "unit unit-active unit-disabled";
       units.children[1].className += "unit";
     }
     if (e.target.id === "fahrenheit") {
       temp.innerHTML = ((+temp.innerHTML * 9) / 5 + 32).toFixed(1);
-      units.children[1].className = "unit unit-active";
+      units.children[1].className = "unit unit-active unit-disabled";
       units.children[0].className += "unit";
     }
   });
+}
+
+function renderDay(data) {
+  clearForecast();
+
+  const [current, ...restOfTheWeek] = data.list;
+
+  const date = new Date(current.dt);
+  let weekday = date.getDay();
+
+  restOfTheWeek.forEach((day) => {
+    weekday++;
+    if (!WEEK[weekday]) weekday = 0;
+
+    weekContainer.insertAdjacentHTML(
+      "beforeend",
+      ` <div class="day">
+            <div class="title">${WEEK[weekday]}</div>
+            <div class="day-icon"><img alt="weather-icon" src="http://openweathermap.org/img/wn/${
+              day.weather[0].icon
+            }@2x.png"></div>
+            <div class="day-temp">
+              <span class="morning"> ${Math.ceil(day.main.temp_min)} °C</span>
+              <span class="evening">${Math.ceil(day.main.temp_max)} °C</span>
+            </div>
+          </div>`
+    );
+  });
+}
+
+function clearForecast() {
+  while (weekContainer.firstChild) {
+    weekContainer.removeChild(weekContainer.firstChild);
+  }
 }
